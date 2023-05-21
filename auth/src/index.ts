@@ -1,5 +1,6 @@
 import express from "express";
 import "express-async-errors";
+import mongoose from "mongoose";
 
 import { NotFoundError } from "./errors/not-found-error";
 import { errorHandler } from "./middlewares/errorHandler";
@@ -29,6 +30,17 @@ app.all("*", async (req, res) => {
 
 app.use(errorHandler);
 
-app.listen(3000, () => {
-  console.log("Listening on port 3000!");
-});
+const start = async () => {
+  try {
+    console.log("[INFO] Connected to MongoDB");
+    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
+
+    app.listen(3000, () => {
+      console.log("[INFO] Listening on port 3000!");
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+start();
