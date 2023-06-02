@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard-geral-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard-geral
+  template:
+    metadata:
+      labels:
+        app: dashboard-geral
+    spec:
+      containers:
+        - name: dashboard-geral
+          image: drakefit/dashboard-geral
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard-geral-srv
+spec:
+  selector:
+    app: dashboard-geral
+  ports:
+    - name: dashboard-geral
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
